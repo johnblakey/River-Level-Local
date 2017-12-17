@@ -1,1 +1,0 @@
-SELECT dateTime FROM levels INNER JOIN rivers ON levels.riverId = rivers.RiverId WHERE siteCode = '07094500'

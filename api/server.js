@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 /** open sqlite database from local file */
 let dbSource = "../dbRiverLevel/levels.db";
-let db = new sqlite3.Database(dbSource, sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database(dbSource, sqlite3.OPEN_READONLY, (err) => {
     if (err) {
         console.error(err.message);
     }
@@ -37,6 +37,7 @@ function handleError(res, reason, message, code) {
 
 app.get("/api/rivers", function(req, res) {
     console.log("accessed /api/rivers");    // debug ============
+    
 });
 
 app.get("/api/rivers/:id", function(req, res) {
