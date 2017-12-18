@@ -13,7 +13,7 @@ let app = express();
 app.use(bodyParser.json());
 
 /** open sqlite database from local file */
-let dbSource = "/home/js/Development/Production/River-Level-Database/dbRiverLevel/levels.db";
+let dbSource = "/home/jb/Development/Production/River-Level-Database/dbRiverLevel/levels.db";
 let db = new sqlite3.Database(dbSource, sqlite3.OPEN_READONLY, (err) => {
     if (err) {
         console.error(err.message);
@@ -22,7 +22,7 @@ let db = new sqlite3.Database(dbSource, sqlite3.OPEN_READONLY, (err) => {
 
     /* initialize the express app */
     let port = "3000";
-    const server = app.listen(port, () => {
+    const server = app.listen(port, "0.0.0.0", () => {
         var {address, port} = server.address();
         console.log(`Express app running at http://${address}:${port}`);
     });
