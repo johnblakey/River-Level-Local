@@ -1,7 +1,5 @@
 /**
  * Created by jb on 12/16/17.
- * https://devcenter.heroku.com/articles/mean-apps-restful-api
- * TODO implement sqlite3 into example
  */
 
 const express = require("express");
@@ -56,14 +54,6 @@ app.get("/api/rivers", function(req, res) {
         }
         res.send(json);
     });
-
-    /*db.all(sql, [], function(err, rows) {
-        if (err) {
-            console.error(err.message);
-        }
-        rows.forEach((row) => {
-		res.json({ "name": row.siteName, "level": row.levelValue, "units": row.unitCode})
-	});*/
 });
 
 /* return one river level */
