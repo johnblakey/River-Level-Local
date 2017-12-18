@@ -54,7 +54,7 @@ app.get("/api/rivers", function(req, res) {
         if (err) {
             console.error(err.message);
         }
-        res.json(json);
+        res.send(json);
     });
 
     /*db.all(sql, [], function(err, rows) {
