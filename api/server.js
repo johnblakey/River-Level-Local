@@ -46,12 +46,13 @@ let sql = `SELECT siteName, levelValue, unitCode FROM
             (SELECT MAX(LevelId) lastLevel FROM levels GROUP BY riverId) maxId
             ON levels.LevelId = maxId.lastLevel;`;
 app.get("/api/rivers", function(req, res) {
-    db.all(sql, function(err, rows) {
+    db.all(sql, [], function(err, rows) {
         if (err) {
             console.error(err.message);
         }
-        console.log(rows.siteName, rows.levelValue, rows.unitCode);
-        res.json({ "name": rows.siteName, "level": rows.levelValue, "units": rows.unitCode})
+        rows.forEach((row) => {
+		res.json({ "name": row.siteName, "level": row.levelValue, "units": row.unitCode})
+	});
     });
 });
 
