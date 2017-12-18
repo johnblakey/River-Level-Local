@@ -8,6 +8,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // sqlite3 to connect to db, .verbose() can be removed to reduce the stack trace
 const sqlite3 = require("sqlite3").verbose();
+const sqliteJSON = require('sqlite-json');
+let exporter;
 
 let app = express();
 app.use(bodyParser.json());
@@ -19,6 +21,8 @@ let db = new sqlite3.Database(dbSource, sqlite3.OPEN_READONLY, (err) => {
         console.error(err.message);
     }
     console.log('Open connection to database:', dbSource);
+
+    exporter = sqliteJSON(dbSource);    // create instance of sqlite-json
 
     /* initialize the express app */
     let port = "3000";
@@ -46,17 +50,23 @@ let sql = `SELECT siteName, levelValue, unitCode FROM
             (SELECT MAX(LevelId) lastLevel FROM levels GROUP BY riverId) maxId
             ON levels.LevelId = maxId.lastLevel;`;
 app.get("/api/rivers", function(req, res) {
-    db.all(sql, [], function(err, rows) {
+    exporter.json(sql, (err, json) => {
+        if (err) {
+            console.error(err.message);
+        }
+        res.json(json);
+    });
+
+    /*db.all(sql, [], function(err, rows) {
         if (err) {
             console.error(err.message);
         }
         rows.forEach((row) => {
 		res.json({ "name": row.siteName, "level": row.levelValue, "units": row.unitCode})
-	});
-    });
+	});*/
 });
 
 /* return one river level */
 app.get("/api/rivers/:id", function(req, res) {
-
+    //TODO implement
 });
