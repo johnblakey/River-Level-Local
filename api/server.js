@@ -37,16 +37,17 @@ function handleError(res, reason, message, code) {
 }
 
 /* return all river levels */
-app.get("/api/rivers", function(req, res) {
-    db.get(`SELECT siteName, levelValue, unitCode FROM
+let sql = `SELECT siteName, levelValue, unitCode FROM
             rivers
                 INNER JOIN
             levels
             ON levels.riverId = rivers.RiverId
                 INNER JOIN
             (SELECT MAX(LevelId) lastLevel FROM levels GROUP BY riverId) maxId
-            ON levels.LevelId = maxId.lastLevel`, function(err, row) {
-        res.json({ "name": row.siteName, "level": row.levelValue, "units": row.unitCode})
+            ON levels.LevelId = maxId.lastLevel;`
+app.get("/api/rivers", function(req, res) {
+    db.all(sql, function(err, rows) {
+        res.json({ "name": rows.siteName, "level": rows.levelValue, "units": rows.unitCode})
     });
 });
 
