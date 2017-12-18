@@ -36,11 +36,21 @@ function handleError(res, reason, message, code) {
     res.status(code || 500).json({"error": message});
 }
 
+/* return all river levels */
 app.get("/api/rivers", function(req, res) {
-    console.log("accessed /api/rivers");    // debug ============
-
+    db.get(`SELECT siteName, levelValue, unitCode FROM
+            rivers
+                INNER JOIN
+            levels
+            ON levels.riverId = rivers.RiverId
+                INNER JOIN
+            (SELECT MAX(LevelId) lastLevel FROM levels GROUP BY riverId) maxId
+            ON levels.LevelId = maxId.lastLevel`, function(err, row) {
+        res.json({ "name": row.siteName, "level": row.levelValue, "units": row.unitCode})
+    });
 });
 
+/* return one river level */
 app.get("/api/rivers/:id", function(req, res) {
-    console.log("accessed /api/rivers/:id");    // debug ========
+
 });
